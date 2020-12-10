@@ -210,30 +210,40 @@ static void thread_state_changed_callback(uint32_t flags, void * p_context)
 		switch (device_role) {
 			case OT_DEVICE_ROLE_CHILD:
 				szRole = "OT_DEVICE_ROLE_CHILD";
+#ifndef DISABLE_OT_ROLE_LIGHTS
 				bsp_board_led_on(LED_CHILD_ROLE);
 				bsp_board_led_off(LED_ROUTER_ROLE);
+#endif // DISABLE_OT_ROLE_LIGHTS
 				break;
 			case OT_DEVICE_ROLE_ROUTER:
 				szRole = "OT_DEVICE_ROLE_ROUTER";
+#ifndef DISABLE_OT_ROLE_LIGHTS
 				bsp_board_led_on(LED_ROUTER_ROLE);
 				bsp_board_led_off(LED_CHILD_ROLE);
+#endif // DISABLE_OT_ROLE_LIGHTS
 				break;
 			case OT_DEVICE_ROLE_LEADER:
 				szRole = "OT_DEVICE_ROLE_LEADER";
+#ifndef DISABLE_OT_ROLE_LIGHTS
 				bsp_board_led_on(LED_CHILD_ROLE);
 				bsp_board_led_on(LED_ROUTER_ROLE);
+#endif // DISABLE_OT_ROLE_LIGHTS
 				break;
 
 			case OT_DEVICE_ROLE_DISABLED:
 				szRole = "OT_DEVICE_ROLE_DISABLED";
+#ifndef DISABLE_OT_ROLE_LIGHTS
 				bsp_board_led_off(LED_ROUTER_ROLE);
 				bsp_board_led_off(LED_CHILD_ROLE);
+#endif // DISABLE_OT_ROLE_LIGHTS
 				break;
 
 			case OT_DEVICE_ROLE_DETACHED:
 				szRole = "OT_DEVICE_ROLE_DETACHED";
+#ifndef DISABLE_OT_ROLE_LIGHTS
 				bsp_board_led_off(LED_ROUTER_ROLE);
 				bsp_board_led_off(LED_CHILD_ROLE);
+#endif // DISABLE_OT_ROLE_LIGHTS
 				break;
 			default:
 				break;
@@ -290,7 +300,7 @@ int main(int argc, char * argv[])
 	APP_ERROR_CHECK(error_code);
 
 	thread_instance_init();
-	otPlatRadioSetTransmitPower(thread_ot_instance_get(), 8);
+	otPlatRadioSetTransmitPower(thread_ot_instance_get(), RADIO_TRANSMIT_POWER);
 	thread_coap_utils_init();
 
 	ret_code_t err_code = app_timer_start(m_voltage_timer_id, APP_TIMER_TICKS(VOLTAGE_TIMER_INTERVAL / ADC_SAMPLES_PER_CHANNEL), NULL);
